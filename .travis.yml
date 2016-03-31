@@ -8,7 +8,6 @@ cache:
     directories:
         - "~/.platformio"
 
-
 env:
     - PLATFORMIO_CI_SRC=examples/basic_ota
 install:
