@@ -4,13 +4,12 @@
 #include <ESP8266WiFi.h>
 #include <CMMC_OTA.h>
 
-CMMC_OTA ota;
-
 #ifndef WIFI_SSID
   #define WIFI_SSID       "Nat"
   #define WIFI_PASSPHRASE "1234567890"
 #endif
 
+CMMC_OTA ota;
 
 void init_hardware()
 {
