@@ -1,5 +1,3 @@
-// #ifndef WIFI_CONNECTOR_H
-// #define WIFI_CONNECTOR_H
 /*
 
 Copyright Nat Weerawan 2015-2016
@@ -35,6 +33,31 @@ CMMC_OTA::CMMC_OTA() {
 
 }
 
+void CMMC_OTA::loop() {
+  if (_initialised) {
+    ArduinoOTA.handle();
+  }
+}
+
+bool CMMC_OTA::initialized() {
+  return _initialised;
+}
+
+void CMMC_OTA::on_start(THandlerFunction fn) {
+  _user_on_start_callback = fn;
+}
+
+void CMMC_OTA::on_end(THandlerFunction fn) {
+  _user_on_end_callback = fn;
+}
+
+void CMMC_OTA::on_progress(THandlerFunction_Progress fn) {
+  _user_on_progress_callback = fn;
+}
+
+void CMMC_OTA::on_error(THandlerFunction_Error fn) {
+  _user_on_error_callback = fn;
+}
 
 CMMC_OTA::~CMMC_OTA() {
 

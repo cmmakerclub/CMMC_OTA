@@ -16,15 +16,21 @@
     #define CMMC_OTA_PRINTLN(...) { }
 #endif
 
+    typedef std::function<void(void)> THandlerFunction;
+    typedef std::function<void(ota_error_t)> THandlerFunction_Error;
+    typedef std::function<void(unsigned int, unsigned int)> THandlerFunction_Progress;
 
 class CMMC_OTA {
   private:
     bool _initialised = false;
+
+  THandlerFunction _user_on_start_callback;
+  THandlerFunction _user_on_end_callback;
+  THandlerFunction_Error _user_on_error_callback;
+  THandlerFunction_Progress _user_on_progress_callback;
+
   public:
-    OTA_CALLBACK(_user_on_start_callback) = NULL;
-    OTA_CALLBACK(_user_on_end_callback) = NULL;
-    OTA_CALLBACK_ERROR(_user_on_error_callback) = NULL;
-    OTA_CALLBACK_PROGRESS(_user_on_progress_callback) = NULL;
+
 
     CMMC_OTA* init() {
       static CMMC_OTA* s_instance = this;
@@ -59,30 +65,16 @@ class CMMC_OTA {
       return s_instance;
     }
 
-    void on_start(OTA_CALLBACK(fn)) {
-      _user_on_start_callback = fn;
-    }
-
-    void on_end(OTA_CALLBACK(fn)) {
-      _user_on_end_callback = fn;
-    }
-
-    void on_progress(OTA_CALLBACK_PROGRESS(fn)) {
-      _user_on_progress_callback = fn;
-    }
-
-    void on_error(OTA_CALLBACK_ERROR(fn)) {
-      _user_on_error_callback = fn;
-    }
+    void loop();
+    void on_start(THandlerFunction fn);
+    void on_end(THandlerFunction fn);
+    void on_progress(THandlerFunction_Progress fn);
+    void on_error(THandlerFunction_Error fn);
+    bool initialized();
 
     CMMC_OTA();
     ~CMMC_OTA();
 
-    void loop() {
-      if (_initialised) {
-        ArduinoOTA.handle();
-      }
-    }
 };
 
 // CMMC_OTA* CMMC_OTA::s_instance = NULL;
