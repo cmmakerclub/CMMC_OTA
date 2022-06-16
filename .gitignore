@@ -3,3 +3,5 @@
 .gcc-flags.json
 lib/CMMC_OTA
 .DS_Store
+.pio
+.vscode
